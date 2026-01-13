@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  products  Product[]
+}
+
+model Product {
+  id        Int      @id @default(autoincrement())
+  name      String
+  unit      String
+  createdAt DateTime @default(now())
+
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  prices     ProductPrice[]
+}
+
+model ExchangeRate {
+  id            Int      @id  @default(autoincrement())
+  rateBgnPerEur Decimal  @db.Decimal(18, 8)
+  validFrom     DateTime
+  createdAt     DateTime @default(now())
+}
+
+model ProductPrice {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+
+  priceBgn        Decimal @db.Decimal(18, 4)
+  rateBgnPerEur   Decimal @db.Decimal(18, 8)
+  priceEurExact   Decimal @db.Decimal(18, 8)
+  priceEurDisplay Decimal @db.Decimal(18, 2)
+
+  roundingPolicy String
+  effectiveFrom  DateTime
+
+  @@index([productId, effectiveFrom(sort: Desc)])
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  refreshTokens RefreshToken[]
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  tokenHash           String   @unique
+  expiresAt           DateTime
+  revokedAt           DateTime?
+  replacedByTokenHash String?
+
+  @@index([userId])
+  @@index([expiresAt])
+}
