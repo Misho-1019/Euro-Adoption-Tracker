@@ -2,6 +2,8 @@ import prisma from "../prisma.js"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+const SECRET = process.env.JWT_SECRET || 'BASIC_SECRET';
+
 export default {
     async register(authData) {
         const { email, password } = authData;
@@ -35,7 +37,7 @@ export default {
             email: user.email,
         }
 
-        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '2h' })
+        const token = jwt.sign(payload, SECRET, { expiresIn: '2h' })
 
         return { token };
     }
