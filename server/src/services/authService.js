@@ -8,22 +8,31 @@ export default {
     async register(authData) {
         const { email, password } = authData;
 
-        const user = await prisma.user.findUnique({
+        const userExists = await prisma.user.findUnique({
             where: { email }
         })
 
-        if (user) {
+        if (userExists) {
             throw new Error("User already exists");
         }
 
         const passwordHash = await bcrypt.hash(password, 10);
 
-        return await prisma.user.create({
+        const user = await prisma.user.create({
             data: {
                 email,
                 passwordHash,
             }
         })
+
+        const payload = {
+            id: user.id,
+            email: user.email,
+        }
+
+        const token = jwt.sign(payload, SECRET, { expiresIn: '2h' })
+
+        return token
     },
     async login(email, password) {
         const user = await prisma.user.findUnique({
@@ -47,6 +56,6 @@ export default {
 
         const token = jwt.sign(payload, SECRET, { expiresIn: '2h' })
 
-        return { token };
+        return token;
     }
 }
