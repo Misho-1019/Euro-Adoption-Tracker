@@ -1,5 +1,11 @@
+import prisma from "../prisma.js"
+
 export default {
     async register(authData) {
-        console.log("Registering user with data:", authData);
+        return await prisma.user.create({
+            data: {
+                authData,
+            }
+        })
     }
 }
