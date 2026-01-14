@@ -8,6 +8,14 @@ export default {
     async register(authData) {
         const { email, password } = authData;
 
+        const user = await prisma.user.findUnique({
+            where: { email }
+        })
+
+        if (user) {
+            throw new Error("User already exists");
+        }
+
         const passwordHash = await bcrypt.hash(password, 10);
 
         return await prisma.user.create({
