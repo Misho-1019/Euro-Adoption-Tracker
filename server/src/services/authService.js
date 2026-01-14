@@ -2,28 +2,35 @@ import prisma from "../prisma.js"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-const SECRET = process.env.JWT_SECRET || 'BASIC_SECRET';
+const SECRET = process.env.JWT_SECRET;
 
 export default {
     async register(authData) {
         const { email, password } = authData;
 
-        const userExists = await prisma.user.findUnique({
-            where: { email }
-        })
-
-        if (userExists) {
-            throw new Error("User already exists");
-        }
-
         const passwordHash = await bcrypt.hash(password, 10);
 
-        const user = await prisma.user.create({
-            data: {
-                email,
-                passwordHash,
+        let user;
+
+        try {
+            user = await prisma.user.create({
+                data: {
+                    email,
+                    passwordHash,
+                },
+                select: {
+                    id: true,
+                    email: true,
+                    createdAt: true,
+                }
+            })
+        } catch (err) {
+            if (err.code === 'P2002') {
+                throw new Error('Email already in use');
             }
-        })
+            
+            throw err;
+        }
 
         const payload = {
             id: user.id,
@@ -40,7 +47,7 @@ export default {
         })
 
         if (!user) {
-            throw new Error("User not found");
+            throw new Error("Invalid email or password");
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.passwordHash)
