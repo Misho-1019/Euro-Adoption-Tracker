@@ -4,6 +4,7 @@ import router from "./router.js";
 import cookieParser from "cookie-parser";
 import prisma from "./prisma.js";
 import cors from "cors";
+import rateLimit from "express-rate-limit";
 import { authMiddleware } from "./middlewares/authMiddleware.js";
 
 dotenv.config();
@@ -21,6 +22,14 @@ app.options("*", cors());
 
 app.use(express.json());
 app.use(cookieParser());
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: "Too many requests from this IP, please try again later.",
+});
+
+app.use(limiter);
 
 (async () => {
   await prisma.$queryRaw`SELECT 1`;
