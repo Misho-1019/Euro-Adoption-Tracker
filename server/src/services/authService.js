@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { generateRefreshToken, hashToken } from "../utils/tokens.js";
 
 const SECRET = process.env.JWT_SECRET;
-const ACCESS_EXPIRES_IN = '3m';
+const ACCESS_EXPIRES_IN = '15m';
 const REFRESH_DAYS = 7;
 
 function requireSecret() {
