@@ -1,4 +1,4 @@
-import {  } from "../prisma.js";
+import prisma from "../prisma.js";
 
 export async function getCurrentRate(asOf = new Date()) {
     const now = asOf instanceof Date ? asOf : new Date();
