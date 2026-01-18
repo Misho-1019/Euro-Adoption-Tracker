@@ -2,11 +2,15 @@ import { Router } from "express";
 import authController from "./controllers/authController.js";
 import rateController from "./controllers/rateController.js";
 import priceController from "./controllers/priceController.js";
+import categoriesController from "./controllers/categoriesController.js";
+import productsController from "./controllers/productsController.js";
 
 const router = Router();
 
 router.use('/auth', authController);
 router.use('/rate', rateController);
 router.use('/products', priceController)
+router.use('/categories', categoriesController);
+router.use('/products', productsController);
 
 export default router
