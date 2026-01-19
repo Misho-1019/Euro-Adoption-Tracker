@@ -45,3 +45,33 @@ export async function getPriceHistory(productId) {
         orderBy: [{ effectiveFrom: 'desc' }, { createdAt: 'desc' }, { id: 'desc' }]
     })
 }
+
+export async function getCurrentPricesForProducts(productIds) {
+    if (!productIds || productIds.length === 0) {
+        return new Map();
+    }
+
+    const productPriceRows = await prisma.productPrice.findMany({
+        where: { productId: {
+            in: productIds,
+        }},
+        orderBy: [{ productId: 'asc'}, {effectiveFrom: 'desc'}],
+        select: {
+            productId: true,
+            effectiveFrom: true,
+            priceBgn: true,
+            priceEurExact: true,
+            priceEurDisplay: true,
+        }
+    })
+
+    const priceMap = new Map();
+
+    for (const row of productPriceRows) {
+        if (!priceMap.has(row.productId)) {
+            priceMap.set(row.productId, row)
+        }
+    }
+
+    return priceMap;
+}
