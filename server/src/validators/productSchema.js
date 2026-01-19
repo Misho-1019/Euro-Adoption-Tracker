@@ -1,4 +1,4 @@
-import z from "zod";
+import {z} from "zod";
 
 export const productSchema = z.object({
     name: z.string().trim().nonempty('Product name is required').max(100, 'Product name must be at most 100 characters long'),
