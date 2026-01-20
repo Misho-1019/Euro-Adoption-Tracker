@@ -4,6 +4,7 @@ import rateController from "./controllers/rateController.js";
 import priceController from "./controllers/priceController.js";
 import categoriesController from "./controllers/categoriesController.js";
 import productsController from "./controllers/productsController.js";
+import basketController from "./controllers/basketController.js";
 
 const router = Router();
 
@@ -12,5 +13,6 @@ router.use('/rate', rateController);
 router.use('/products', priceController)
 router.use('/categories', categoriesController);
 router.use('/products', productsController);
+router.use('/basket', basketController)
 
 export default router
