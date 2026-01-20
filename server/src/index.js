@@ -6,6 +6,7 @@ import prisma from "./prisma.js";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
 import { authMiddleware } from "./middlewares/authMiddleware.js";
+import { errorMiddleware } from "./middlewares/errorMiddleware.js";
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.use(limiter);
 
 app.use(router);
 app.use(authMiddleware)
+app.use(errorMiddleware)
 
 const port = process.env.PORT || 3000;
 app.listen(port, () =>
