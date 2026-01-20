@@ -81,3 +81,8 @@ model RefreshToken {
   @@index([userId])
   @@index([expiresAt])
 }
+
+model AppSetting {
+  key   String @id
+  value String
+}

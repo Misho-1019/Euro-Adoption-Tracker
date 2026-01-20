@@ -59,6 +59,23 @@ async function main() {
   await prisma.category.deleteMany();
   await prisma.exchangeRate.deleteMany();
 
+  // -------------- APP SETTINGS (defaults) --------------
+  // Stored as strings; services will interpret later.
+  const defaultSettings = [
+    ["dual_pricing_enabled", "true"],
+    ["dual_pricing_start", "2025-01-01"],
+    ["dual_pricing_end", "2026-12-31"],
+    ["rounding_policy", "HALF_UP"],
+  ];
+
+  for (const [key, value] of defaultSettings) {
+    await prisma.appSetting.upsert({
+      where: { key },
+      update: { value },
+      create: { key, value },
+    });
+  }
+
   // -------------- EXCHANGE RATE --------------
   await prisma.exchangeRate.create({
     data: {
