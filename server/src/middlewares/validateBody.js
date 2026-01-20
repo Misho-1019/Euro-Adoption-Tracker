@@ -2,9 +2,10 @@
 export function validateBody(schema) {
     return (req, res, next) => {
         const result = schema.safeParse(req.body)
-        const errors = result.error.issues ?? result.error.errors ?? [];
-
+        
         if (!result.success) {
+            const errors = result.error.issues ?? result.error.errors ?? [];
+            
             return res.status(400).json({
                 errors: errors.map((e) => ({
                     field: e.path.join('.'),
