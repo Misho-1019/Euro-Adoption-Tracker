@@ -1,9 +1,7 @@
 import prisma from "../prisma.js";
 
 export async function findAll() {
-    return await prisma.appSetting.findMany({
-        orderBy: { key }
-    })
+    return await prisma.appSetting.findMany()
 }
 
 export async function findByKey(key) {
