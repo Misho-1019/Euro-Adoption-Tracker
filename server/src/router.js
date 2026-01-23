@@ -7,6 +7,7 @@ import productsController from "./controllers/productsController.js";
 import basketController from "./controllers/basketController.js";
 import settingsController from "./controllers/settingsController.js";
 import complianceController from "./controllers/complianceController.js";
+import analyticsController from "./controllers/analyticsController.js";
 
 const router = Router();
 
@@ -18,5 +19,6 @@ router.use('/products', productsController);
 router.use('/basket', basketController)
 router.use('/settings', settingsController)
 router.use('/compliance', complianceController)
+router.use('/analytics', analyticsController)
 
 export default router
