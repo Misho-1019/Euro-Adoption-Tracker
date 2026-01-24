@@ -1,5 +1,5 @@
 import { categoryInflation, latestPricePerProduct, listProducts, productSpikes } from "../repositories/analyticsRepository.js";
-import { findById } from "../repositories/productRepository.js";
+import { findById } from "../repositories/categoryRepository.js";
 
 export async function productSpikesService(productId, from, to, threshold = 20) {
     const rows = await productSpikes(productId, from, to, threshold)
