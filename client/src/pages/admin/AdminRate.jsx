@@ -7,7 +7,7 @@ import {
   ArrowPathIcon
 } from '@heroicons/react/24/outline';
 
-const AdminRate = () => {
+export default function AdminRate() {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Page Header */}
@@ -50,7 +50,7 @@ const AdminRate = () => {
 
           <div className="bg-blue-50 border border-blue-100 rounded-xl p-4">
              <div className="flex items-start">
-               <ArrowPathIcon className="w-5 h-5 text-[#003399] mt-0.5 mr-3 flex-shrink-0" />
+               <ArrowPathIcon className="w-5 h-5 text-[#003399] mt-0.5 mr-3 shrink-0" />
                <p className="text-sm text-blue-900">
                  Changes to the exchange rate are propagated immediately to all calculations in the system.
                </p>
@@ -113,7 +113,7 @@ const AdminRate = () => {
               {/* Warning Box */}
               <div className="rounded-lg bg-amber-50 p-4 border border-amber-100">
                 <div className="flex">
-                  <div className="flex-shrink-0">
+                  <div className="shrink-0">
                     <ExclamationTriangleIcon className="h-5 w-5 text-amber-500" aria-hidden="true" />
                   </div>
                   <div className="ml-3">
@@ -149,5 +149,3 @@ const AdminRate = () => {
     </div>
   );
 };
-
-export default AdminRate;

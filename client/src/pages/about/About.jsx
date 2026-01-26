@@ -9,7 +9,7 @@ import {
   LightBulbIcon
 } from '@heroicons/react/24/outline';
 
-const About = () => {
+export default function About() {
   return (
     <div className="max-w-7xl mx-auto space-y-12">
       
@@ -55,7 +55,7 @@ const About = () => {
             
             {/* Yellow Callout: Key Takeaway */}
             <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg flex items-start space-x-3">
-              <LightBulbIcon className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-0.5" />
+              <LightBulbIcon className="w-6 h-6 text-yellow-600 shrink-0 mt-0.5" />
               <div>
                 <h4 className="text-sm font-bold text-yellow-800 uppercase">Key Takeaway</h4>
                 <p className="text-sm text-yellow-900 mt-1">
@@ -102,7 +102,7 @@ const About = () => {
 
             {/* Blue Callout: Methodology Note */}
             <div className="bg-blue-50 border-l-4 border-[#003399] p-4 rounded-r-lg flex items-start space-x-3">
-              <InformationCircleIcon className="w-6 h-6 text-[#003399] flex-shrink-0 mt-0.5" />
+              <InformationCircleIcon className="w-6 h-6 text-[#003399] shrink-0 mt-0.5" />
               <div>
                 <h4 className="text-sm font-bold text-blue-900 uppercase">Methodology Note</h4>
                 <p className="text-sm text-blue-800 mt-1">
@@ -204,5 +204,3 @@ const About = () => {
     </div>
   );
 };
-
-export default About;

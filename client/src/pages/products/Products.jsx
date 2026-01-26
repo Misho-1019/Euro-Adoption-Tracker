@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Products = () => {
+export default function Products() {
   // Mock data for the products table
   const products = [
     { id: 1, name: 'White Bread (Standard)', category: 'Food Staples', unit: 'Loaf (500g)', priceBgn: '1.45', priceEur: '0.74', date: '2025-01-20' },
@@ -95,5 +95,3 @@ const Products = () => {
     </div>
   );
 };
-
-export default Products;

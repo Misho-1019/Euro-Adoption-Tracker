@@ -7,7 +7,7 @@ import {
   TagIcon
 } from '@heroicons/react/24/outline';
 
-const AdminCategories = () => {
+export default function AdminCategories() {
   // Mock Data
   const categories = [
     { id: 1, name: 'Bakery', description: 'Breads, pastries, and baked goods', count: 142, isCore: true },
@@ -105,5 +105,3 @@ const AdminCategories = () => {
     </div>
   );
 };
-
-export default AdminCategories;

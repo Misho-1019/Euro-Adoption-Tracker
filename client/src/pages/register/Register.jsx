@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from "react-router";
 
-const Register = () => {
+export default function Register() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 py-6 px-4 sm:py-12 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-6 sm:space-y-8 bg-white p-6 sm:p-10 rounded-2xl shadow-xl border border-slate-100">
@@ -109,9 +110,9 @@ const Register = () => {
           {/* Navigation Link */}
           <div className="text-center text-sm text-slate-600">
             Already have an account?{' '}
-            <a href="#" className="font-medium text-blue-600 hover:text-blue-500 hover:underline">
+            <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500 hover:underline">
               Sign in
-            </a>
+            </Link>
           </div>
 
           {/* Helper Text */}
@@ -128,5 +129,3 @@ const Register = () => {
     </div>
   );
 };
-
-export default Register;

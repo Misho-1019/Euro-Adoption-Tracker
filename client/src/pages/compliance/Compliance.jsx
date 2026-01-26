@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Compliance = () => {
+export default function Compliance() {
   return (
     <div className="space-y-6 font-sans text-slate-900">
       
@@ -152,5 +152,3 @@ const Compliance = () => {
     </div>
   );
 };
-
-export default Compliance;

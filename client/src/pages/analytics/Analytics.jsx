@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Analytics = () => {
+export default function Analytics() {
     // Mock data for the comparison table
     const comparisonData = [
         { id: 1, name: 'White Bread (Standard)', category: 'Food Staples', priceA: '0.74', priceB: '0.75', change: '+1.35%', trend: 'up' },
@@ -183,5 +183,3 @@ const Analytics = () => {
         </div>
     );
 };
-
-export default Analytics;

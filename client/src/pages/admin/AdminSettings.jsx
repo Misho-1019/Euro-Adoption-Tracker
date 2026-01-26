@@ -6,7 +6,7 @@ import {
   CurrencyEuroIcon
 } from '@heroicons/react/24/outline';
 
-const AdminSettings = () => {
+export default function AdminSettings() {
   return (
     <div className="space-y-8">
       {/* Page Header */}
@@ -35,7 +35,7 @@ const AdminSettings = () => {
               {/* Mock Toggle Switch (Active) */}
               <button 
                 type="button"
-                className="bg-[#003399] relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="bg-[#003399] relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 role="switch"
                 aria-checked="true"
               >
@@ -96,7 +96,7 @@ const AdminSettings = () => {
 
             {/* Info Note */}
             <div className="rounded-lg bg-blue-50 p-4 border border-blue-100 flex items-start">
-              <InformationCircleIcon className="w-5 h-5 text-blue-700 mt-0.5 mr-2 flex-shrink-0" />
+              <InformationCircleIcon className="w-5 h-5 text-blue-700 mt-0.5 mr-2 shrink-0" />
               <p className="text-xs text-blue-800">
                 Rounding policies strictly follow the mathematical rules defined in the official Euro adoption methodology. Changing this may result in small price variances across the catalog.
               </p>
@@ -154,7 +154,7 @@ const AdminSettings = () => {
                <label htmlFor="delta-threshold" className="block text-sm font-medium text-slate-700">
                  Rounding delta warning threshold (EUR)
                </label>
-               <div className="relative rounded-md shadow-sm max-w-[140px]">
+               <div className="relative rounded-md shadow-sm max-w-35">
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                     <span className="text-slate-500 sm:text-sm">€</span>
                   </div>
@@ -199,5 +199,3 @@ const AdminSettings = () => {
     </div>
   );
 };
-
-export default AdminSettings;

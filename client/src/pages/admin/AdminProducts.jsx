@@ -8,7 +8,7 @@ import {
   EllipsisVerticalIcon
 } from '@heroicons/react/24/outline';
 
-const AdminProducts = () => {
+export default function AdminProducts() {
   // Mock Data
   const products = [
     { id: 1, name: 'White Bread', category: 'Bakery', unit: 'Loaf (500g)', priceBgn: 1.80, priceEur: 0.92, effectiveDate: '2024-01-01' },
@@ -165,5 +165,3 @@ const AdminProducts = () => {
     </div>
   );
 };
-
-export default AdminProducts;

@@ -8,7 +8,7 @@ import {
   DocumentCheckIcon
 } from '@heroicons/react/24/outline';
 
-const ComplianceRules = () => {
+export default function ComplianceRules() {
   return (
     <div className="max-w-7xl mx-auto space-y-12">
       
@@ -52,19 +52,19 @@ const ComplianceRules = () => {
             </p>
             <ul className="grid gap-3 sm:grid-cols-2">
               <li className="flex items-start">
-                <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#003399] mt-2 mr-3"></div>
+                <div className="shrink-0 w-1.5 h-1.5 rounded-full bg-[#003399] mt-2 mr-3"></div>
                 <span className="text-slate-700 text-sm"><strong>Simultaneous Display:</strong> Both the final price in BGN and EUR must be clearly visible.</span>
               </li>
               <li className="flex items-start">
-                <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#003399] mt-2 mr-3"></div>
+                <div className="shrink-0 w-1.5 h-1.5 rounded-full bg-[#003399] mt-2 mr-3"></div>
                 <span className="text-slate-700 text-sm"><strong>Equal Visibility:</strong> The EUR price should be legible and easily distinguishable from the BGN price.</span>
               </li>
               <li className="flex items-start">
-                <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#003399] mt-2 mr-3"></div>
+                <div className="shrink-0 w-1.5 h-1.5 rounded-full bg-[#003399] mt-2 mr-3"></div>
                 <span className="text-slate-700 text-sm"><strong>Clarity:</strong> No other currencies should be displayed to avoid customer confusion.</span>
               </li>
               <li className="flex items-start">
-                <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#003399] mt-2 mr-3"></div>
+                <div className="shrink-0 w-1.5 h-1.5 rounded-full bg-[#003399] mt-2 mr-3"></div>
                 <span className="text-slate-700 text-sm"><strong>Unambiguous Labels:</strong> Currency symbols or codes (BGN/лв, EUR/€) must be clearly stated.</span>
               </li>
             </ul>
@@ -144,7 +144,7 @@ const ComplianceRules = () => {
           {/* 5. Important Notes */}
            <section className="bg-yellow-50 border border-yellow-100 rounded-xl p-6">
              <div className="flex items-start">
-               <InformationCircleIcon className="w-6 h-6 text-yellow-600 mt-0.5 mr-3 flex-shrink-0" />
+               <InformationCircleIcon className="w-6 h-6 text-yellow-600 mt-0.5 mr-3 shrink-0" />
                <div className="space-y-2">
                  <h3 className="text-base font-bold text-yellow-900">Important Notes & Limitations</h3>
                  <p className="text-sm text-yellow-800">
@@ -169,7 +169,7 @@ const ComplianceRules = () => {
             
             <div className="space-y-6">
               <div className="flex items-start space-x-3">
-                <XCircleIcon className="w-6 h-6 text-red-600 flex-shrink-0" />
+                <XCircleIcon className="w-6 h-6 text-red-600 shrink-0" />
                 <div>
                   <h4 className="font-bold text-xs text-red-700 uppercase tracking-wide">Error (Critical)</h4>
                   <p className="text-sm text-slate-600 mt-1">
@@ -179,7 +179,7 @@ const ComplianceRules = () => {
               </div>
 
                <div className="flex items-start space-x-3">
-                <ExclamationTriangleIcon className="w-6 h-6 text-amber-500 flex-shrink-0" />
+                <ExclamationTriangleIcon className="w-6 h-6 text-amber-500 shrink-0" />
                 <div>
                   <h4 className="font-bold text-xs text-amber-700 uppercase tracking-wide">Warning</h4>
                   <p className="text-sm text-slate-600 mt-1">
@@ -195,5 +195,3 @@ const ComplianceRules = () => {
     </div>
   );
 };
-
-export default ComplianceRules;

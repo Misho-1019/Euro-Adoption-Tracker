@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Dashboard = () => {
+export default function Dashboard() {
   // --- Mock Data ---
   const currentRate = {
     value: "25.30",
@@ -217,5 +217,3 @@ const Dashboard = () => {
     </div>
   );
 };
-
-export default Dashboard;

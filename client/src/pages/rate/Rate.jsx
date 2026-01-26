@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Rate = () => {
+export default function Rate() {
     // Mock data for historical rates (showing stability)
     const rateHistory = [
         { id: 1, date: '2025-01-25', rate: '1.95583', status: 'Confirmed' },
@@ -112,7 +112,7 @@ const Rate = () => {
                     
                     {/* Additional Info / Alert Box */}
                     <div className="mt-6 bg-blue-50 border border-blue-100 rounded-sm p-4 flex gap-3">
-                        <div className="flex-shrink-0">
+                        <div className="shrink-0">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#003399]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
@@ -127,5 +127,3 @@ const Rate = () => {
         </div>
     );
 };
-
-export default Rate;

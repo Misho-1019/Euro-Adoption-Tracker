@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Basket = () => {
+export default function Basket() {
   // Mock data for basket items
   const basketItems = [
     { id: 1, name: 'White Bread (Standard)', category: 'Food Staples', unit: 'Loaf (500g)', qty: 2, priceBgn: 1.45, priceEur: 0.74136 },
@@ -165,5 +165,3 @@ const Basket = () => {
     </div>
   );
 };
-
-export default Basket;

@@ -11,7 +11,7 @@ import {
   GlobeEuropeAfricaIcon
 } from '@heroicons/react/24/outline';
 
-const AdminDashboard = () => {
+export default function AdminDashboard() {
   return (
     <div className="space-y-8">
       {/* Page Header */}
@@ -166,5 +166,3 @@ const AdminDashboard = () => {
     </div>
   );
 };
-
-export default AdminDashboard;
