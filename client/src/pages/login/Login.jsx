@@ -1,12 +1,12 @@
-import React, { useActionState } from 'react';
+import React, { useActionState, useContext } from 'react';
 import { Link, useNavigate } from "react-router";
 import { useLogin } from '../../api/authApi';
+import { UserContext } from '../../context/UserContext';
 
-export default function Login({
-  Login
-}) {
-  // const navigate = useNavigate()
+export default function Login() {
+  const navigate = useNavigate()
   const { login } = useLogin()
+  const { userLoginHandler } = useContext(UserContext)
 
   const loginHandler = async (_, formData) => {
     const values = Object.fromEntries(formData)
@@ -15,9 +15,9 @@ export default function Login({
 
     console.log(authData);
 
-    Login(authData)
+    userLoginHandler(authData)
 
-    // navigate('/')
+    navigate('/')
   }
 
   const [_, loginAction, isPending] = useActionState(loginHandler, {
@@ -75,6 +75,7 @@ export default function Login({
           <div>
             <button
               type="submit"
+              disabled={isPending}
               className="group relative w-full flex justify-center py-2.5 sm:py-3 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-sm hover:shadow-md"
             >
               Sign in to Dashboard

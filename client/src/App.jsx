@@ -17,36 +17,39 @@ import AdminSettings from './pages/admin/AdminSettings';
 import About from './pages/about/About';
 import ComplianceRules from './pages/compliance/ComplianceRules';
 import { useState } from 'react';
+import { UserContext } from './context/UserContext';
 
 function App() {
-  const [_authData, setAuthData] = useState({})
+  const [authData, setAuthData] = useState({})
 
-  const userLoginHandler = (authData) => {
-    setAuthData(authData)
+  const userLoginHandler = (resultData) => {
+    setAuthData(resultData)
   }
 
   return (
-    <Routes>
-      <Route path='/login' element={<Login Login={userLoginHandler} />} />
-      <Route path='/register' element={<Register />} />
-
-      <Route element={<AppLayout />}>
-        <Route index element={<Dashboard />} />
-        <Route path='/products' element={<Products />} />
-        <Route path='/rate' element={<Rate />} />
-        <Route path='/basket' element={<Basket />} />
-        <Route path='/compliance' element={<Compliance />} />
-        <Route path='/analytics' element={<Analytics />} />
-        <Route path='/about' element={<About />} />
-        <Route path='/compliance/rules' element={<ComplianceRules />} />
-
-        <Route path='/admin' element={<AdminDashboard />} />
-        <Route path='/admin/rate' element={<AdminRate />} />
-        <Route path='/admin/products' element={<AdminProducts />} />
-        <Route path='/admin/categories' element={<AdminCategories />} />
-        <Route path='/admin/settings' element={<AdminSettings />} />
-      </Route>
-    </Routes>
+    <UserContext.Provider value={{ ...authData, userLoginHandler }}>
+      <Routes>
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+  
+        <Route element={<AppLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path='/products' element={<Products />} />
+          <Route path='/rate' element={<Rate />} />
+          <Route path='/basket' element={<Basket />} />
+          <Route path='/compliance' element={<Compliance />} />
+          <Route path='/analytics' element={<Analytics />} />
+          <Route path='/about' element={<About />} />
+          <Route path='/compliance/rules' element={<ComplianceRules />} />
+  
+          <Route path='/admin' element={<AdminDashboard />} />
+          <Route path='/admin/rate' element={<AdminRate />} />
+          <Route path='/admin/products' element={<AdminProducts />} />
+          <Route path='/admin/categories' element={<AdminCategories />} />
+          <Route path='/admin/settings' element={<AdminSettings />} />
+        </Route>
+      </Routes>
+    </UserContext.Provider>
   )
 }
 
