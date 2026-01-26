@@ -1,19 +1,28 @@
-const request = async (method, url, data) => {
-    let options = {};
+const request = async (method, url, data, options = {}) => {
 
-    if (method !== 'GET') { options = { method, } }
+    if (method !== 'GET') { options.method = method }
 
     if (data) {
         options = {
             ...options,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                ...options.headers
             },
             body: JSON.stringify(data)
         }
     }
 
+    options = {
+        credentials: 'include',
+        ...options
+    }
+
     const response = await fetch(url, options)
+
+    const contentResponseType = options.headers.get('Content-Type')
+
+    if (!contentResponseType) return;
 
     const result = await response.json()
 
