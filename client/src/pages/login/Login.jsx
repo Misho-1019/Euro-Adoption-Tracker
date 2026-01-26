@@ -1,20 +1,26 @@
-import React from 'react';
+import React, { useActionState } from 'react';
 import { Link, useNavigate } from "react-router";
 
 export default function Login({
   Login
 }) {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
-  const formAction = (formData) => {
-    const email = formData.get('email')
+  const loginHandler = (previousState, formData) => {
+    const values = Object.fromEntries(formData)
 
-    console.log(email);
+    console.log(values);
 
-    Login(email)
+    Login(values.email)
 
-    navigate('/')
+    return values
+
+    // navigate('/')
   }
+
+  const [values, loginAction, isPending] = useActionState(loginHandler, {
+    email: '', password: ''
+  })
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 py-6 px-4 sm:py-12 sm:px-6 lg:px-8">
@@ -28,7 +34,7 @@ export default function Login({
           </p>
         </div>
         
-        <form className="mt-6 sm:mt-8 space-y-6" action={formAction}>
+        <form className="mt-6 sm:mt-8 space-y-6" action={loginAction}>
           <div className="space-y-4 sm:space-y-5">
             {/* Email Input */}
             <div>
