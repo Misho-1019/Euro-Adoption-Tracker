@@ -19,13 +19,10 @@ import ComplianceRules from './pages/compliance/ComplianceRules';
 import { useState } from 'react';
 
 function App() {
-  const [_email, setEmail] = useState('')
+  const [_authData, setAuthData] = useState({})
 
   const userLoginHandler = (authData) => {
-    setEmail(authData.email)
-
-    console.log(authData);
-    
+    setAuthData(authData)
   }
 
   return (
