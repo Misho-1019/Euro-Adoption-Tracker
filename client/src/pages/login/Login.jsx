@@ -1,7 +1,21 @@
 import React from 'react';
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
-export default function Login() {
+export default function Login({
+  Login
+}) {
+  const navigate = useNavigate()
+
+  const formAction = (formData) => {
+    const email = formData.get('email')
+
+    console.log(email);
+
+    Login(email)
+
+    navigate('/')
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 py-6 px-4 sm:py-12 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-6 sm:space-y-8 bg-white p-6 sm:p-10 rounded-2xl shadow-xl border border-slate-100">
@@ -14,7 +28,7 @@ export default function Login() {
           </p>
         </div>
         
-        <form className="mt-6 sm:mt-8 space-y-6" onSubmit={(e) => e.preventDefault()}>
+        <form className="mt-6 sm:mt-8 space-y-6" action={formAction}>
           <div className="space-y-4 sm:space-y-5">
             {/* Email Input */}
             <div>

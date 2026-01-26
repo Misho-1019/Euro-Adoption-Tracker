@@ -16,11 +16,18 @@ import AdminCategories from './pages/admin/AdminCategories';
 import AdminSettings from './pages/admin/AdminSettings';
 import About from './pages/about/About';
 import ComplianceRules from './pages/compliance/ComplianceRules';
+import { useState } from 'react';
 
 function App() {
+  const [_email, setEmail] = useState('')
+
+  const userLoginHandler = (email) => {
+    setEmail(email)
+  }
+
   return (
     <Routes>
-      <Route path='/login' element={<Login />} />
+      <Route path='/login' element={<Login Login={userLoginHandler} />} />
       <Route path='/register' element={<Register />} />
 
       <Route element={<AppLayout />}>
