@@ -18,6 +18,7 @@ import About from './pages/about/About';
 import ComplianceRules from './pages/compliance/ComplianceRules';
 import Logout from './pages/logout/Logout';
 import { UserProvider } from './providers/UserProvider';
+import AuthGuard from './components/guards/authGuard';
 
 function App() {
   return (
@@ -25,24 +26,27 @@ function App() {
       <Routes>
   
         <Route element={<AppLayout />}>
+          <Route element={<AuthGuard />}>
+            <Route index element={<Dashboard />} />
+            <Route path='/products' element={<Products />} />
+            <Route path='/rate' element={<Rate />} />
+            <Route path='/basket' element={<Basket />} />
+            <Route path='/compliance' element={<Compliance />} />
+            <Route path='/analytics' element={<Analytics />} />
+            <Route path='/about' element={<About />} />
+            <Route path='/compliance/rules' element={<ComplianceRules />} />
+            <Route path='/logout' element={<Logout />} />
+
+            <Route path='/admin' element={<AdminDashboard />} />
+            <Route path='/admin/rate' element={<AdminRate />} />
+            <Route path='/admin/products' element={<AdminProducts />} />
+            <Route path='/admin/categories' element={<AdminCategories />} />
+            <Route path='/admin/settings' element={<AdminSettings />} />
+          </Route>
+
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/logout' element={<Logout />} />
-
-          <Route index element={<Dashboard />} />
-          <Route path='/products' element={<Products />} />
-          <Route path='/rate' element={<Rate />} />
-          <Route path='/basket' element={<Basket />} />
-          <Route path='/compliance' element={<Compliance />} />
-          <Route path='/analytics' element={<Analytics />} />
-          <Route path='/about' element={<About />} />
-          <Route path='/compliance/rules' element={<ComplianceRules />} />
   
-          <Route path='/admin' element={<AdminDashboard />} />
-          <Route path='/admin/rate' element={<AdminRate />} />
-          <Route path='/admin/products' element={<AdminProducts />} />
-          <Route path='/admin/categories' element={<AdminCategories />} />
-          <Route path='/admin/settings' element={<AdminSettings />} />
         </Route>
       </Routes>
 
