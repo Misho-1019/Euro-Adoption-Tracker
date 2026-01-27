@@ -59,6 +59,8 @@ model ProductPrice {
 
 model User {
   id           Int      @id @default(autoincrement())
+  firstName    String
+  lastName     String
   email        String   @unique
   passwordHash String
   createdAt    DateTime @default(now())

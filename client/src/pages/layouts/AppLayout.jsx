@@ -159,12 +159,12 @@ export default function AppLayout() {
                   </NavLink>
                 </>
               ) : (
-                <button
-                  type="button"
+                <NavLink
+                  to='/logout'
                   className="w-full text-center text-xs font-semibold px-3 py-2 rounded-lg border border-blue-800/40 text-blue-100 hover:bg-blue-800/60"
                 >
                   Logout
-                </button>
+                </NavLink>
               )}
             </div>
           )}

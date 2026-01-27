@@ -13,8 +13,6 @@ export default function Login() {
 
     const authData = await login(values.email, values.password)
 
-    console.log(authData);
-
     userLoginHandler(authData)
 
     navigate('/')

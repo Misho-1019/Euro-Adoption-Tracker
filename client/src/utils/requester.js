@@ -20,7 +20,7 @@ const request = async (method, url, data, options = {}) => {
 
     const response = await fetch(url, options)
 
-    const contentResponseType = options.headers.get('Content-Type')
+    const contentResponseType = response.headers.get('Content-Type')
 
     if (!contentResponseType) return;
 

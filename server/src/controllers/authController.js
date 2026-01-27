@@ -12,11 +12,13 @@ authController.post('/register', isGuest, validateBody(registerSchema), async (r
     try {
         const { accessToken, refreshToken } = await authService.register(authData)
 
-        res.cookie('auth', accessToken, { httpOnly: true, sameSite: 'lax' })
+        res.cookie('auth', accessToken.token, { httpOnly: true, sameSite: 'lax' })
         res.cookie('refresh', refreshToken, { httpOnly: true, sameSite: 'lax' })
 
-        return res.status(201).json({ userInfo: accessToken, message: 'User registered successfully' });
+        return res.status(201).json(accessToken);
     } catch (error) {
+        console.log(error);
+        
         return res.status(400).json({ error: error.message })
     }
 })
@@ -27,10 +29,10 @@ authController.post('/login', isGuest, validateBody(loginSchema), async (req, re
     try {
         const { accessToken, refreshToken } = await authService.login(email, password)
         
-        res.cookie('auth', accessToken, { httpOnly: true, sameSite: 'lax' })
+        res.cookie('auth', accessToken.token, { httpOnly: true, sameSite: 'lax' })
         res.cookie('refresh', refreshToken, { httpOnly: true, sameSite: 'lax' })
 
-        res.status(200).json({ userInfo: accessToken, message: 'Logged in successfully' });
+        res.status(200).json(accessToken);
     } catch (error) {
         console.log(error.message);
         res.status(400).json({ error: error.message });

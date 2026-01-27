@@ -35,8 +35,8 @@ app.use(limiter);
   console.log("✅ Prisma Database connected successfully");
 })();
 
-app.use(router);
 app.use(authMiddleware)
+app.use(router);
 app.use(errorMiddleware)
 
 const port = process.env.PORT || 3000;

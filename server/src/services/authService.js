@@ -21,7 +21,16 @@ function buildAccessToken(user) {
         email: user.email,
     }
 
-    return jwt.sign(payload, SECRET, { expiresIn: ACCESS_EXPIRES_IN })
+    const token = jwt.sign(payload, SECRET, { expiresIn: ACCESS_EXPIRES_IN })
+
+    return {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        token,
+        
+    }
 }
 
 function refreshExpiryDate() {
