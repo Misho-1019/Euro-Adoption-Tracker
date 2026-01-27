@@ -19,6 +19,7 @@ import ComplianceRules from './pages/compliance/ComplianceRules';
 import Logout from './pages/logout/Logout';
 import { UserProvider } from './providers/UserProvider';
 import AuthGuard from './components/guards/authGuard';
+import GuestGuard from './components/guards/guestGuard';
 
 function App() {
   return (
@@ -44,8 +45,10 @@ function App() {
             <Route path='/admin/settings' element={<AdminSettings />} />
           </Route>
 
-          <Route path='/register' element={<Register />} />
-          <Route path='/login' element={<Login />} />
+          <Route element={<GuestGuard />}>
+            <Route path='/register' element={<Register />} />
+            <Route path='/login' element={<Login />} />
+          </Route>
   
         </Route>
       </Routes>
