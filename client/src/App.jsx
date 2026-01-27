@@ -27,8 +27,12 @@ function App() {
     setAuthData(resultData)
   }
 
+  const userLogoutHandler = () => {
+    setAuthData({})
+  }
+
   return (
-    <UserContext.Provider value={{ ...authData, userLoginHandler }}>
+    <UserContext.Provider value={{ ...authData, userLoginHandler, userLogoutHandler }}>
       <Routes>
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
