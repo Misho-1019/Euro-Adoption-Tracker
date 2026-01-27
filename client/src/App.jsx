@@ -19,9 +19,10 @@ import ComplianceRules from './pages/compliance/ComplianceRules';
 import { useState } from 'react';
 import { UserContext } from './context/UserContext';
 import Logout from './pages/logout/Logout';
+import usePersistedState from './hooks/usePersistedState';
 
 function App() {
-  const [authData, setAuthData] = useState({})
+  const [authData, setAuthData] = usePersistedState('auth', {})
 
   const userLoginHandler = (resultData) => {
     setAuthData(resultData)

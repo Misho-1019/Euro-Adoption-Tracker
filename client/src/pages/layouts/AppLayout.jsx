@@ -72,7 +72,7 @@ export default function AppLayout() {
       {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 z-40 h-screen transition-all duration-300 bg-[#003399] flex flex-col shadow-xl border-r border-blue-900
-          ${isCollapsed ? "w-[72px]" : "w-[280px]"}
+          ${isCollapsed ? "w-18" : "w-70"}
         `}
       >
         {/* Brand */}
@@ -182,7 +182,7 @@ export default function AppLayout() {
       {/* Main */}
       <main
         className={`flex-1 min-h-screen transition-all duration-300
-          ${isCollapsed ? "ml-[72px]" : "ml-[280px]"}
+          ${isCollapsed ? "ml-18" : "ml-70"}
         `}
       >
         <div className="h-full w-full p-6 md:p-8">
