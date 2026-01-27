@@ -18,6 +18,7 @@ import About from './pages/about/About';
 import ComplianceRules from './pages/compliance/ComplianceRules';
 import { useState } from 'react';
 import { UserContext } from './context/UserContext';
+import Logout from './pages/logout/Logout';
 
 function App() {
   const [authData, setAuthData] = useState({})
@@ -31,6 +32,7 @@ function App() {
       <Routes>
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/logout' element={<Logout />} />
   
         <Route element={<AppLayout />}>
           <Route index element={<Dashboard />} />
