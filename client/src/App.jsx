@@ -34,11 +34,12 @@ function App() {
   return (
     <UserContext.Provider value={{ ...authData, userLoginHandler, userLogoutHandler }}>
       <Routes>
-        <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Register />} />
-        <Route path='/logout' element={<Logout />} />
   
         <Route element={<AppLayout />}>
+          <Route path='/register' element={<Register />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/logout' element={<Logout />} />
+
           <Route index element={<Dashboard />} />
           <Route path='/products' element={<Products />} />
           <Route path='/rate' element={<Rate />} />
