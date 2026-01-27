@@ -15,7 +15,7 @@ authController.post('/register', isGuest, validateBody(registerSchema), async (r
         res.cookie('auth', accessToken, { httpOnly: true, sameSite: 'lax' })
         res.cookie('refresh', refreshToken, { httpOnly: true, sameSite: 'lax' })
 
-        return res.status(201).json({ message: 'User registered successfully' });
+        return res.status(201).json({ userInfo: accessToken, message: 'User registered successfully' });
     } catch (error) {
         return res.status(400).json({ error: error.message })
     }
@@ -30,7 +30,7 @@ authController.post('/login', isGuest, validateBody(loginSchema), async (req, re
         res.cookie('auth', accessToken, { httpOnly: true, sameSite: 'lax' })
         res.cookie('refresh', refreshToken, { httpOnly: true, sameSite: 'lax' })
 
-        res.status(200).json({ message: 'Logged in successfully' });
+        res.status(200).json({ userInfo: accessToken, message: 'Logged in successfully' });
     } catch (error) {
         console.log(error.message);
         res.status(400).json({ error: error.message });
@@ -57,7 +57,7 @@ authController.post('/refresh', async (req, res) => {
         res.cookie('auth', accessToken, { httpOnly: true, sameSite: 'lax' })
         res.cookie('refresh', refreshToken, { httpOnly: true, sameSite: 'lax' })
 
-        return res.status(200).json({ message: 'Tokens refreshed successfully' });
+        return res.status(200).json({ userInfo: accessToken, message: 'Tokens refreshed successfully' });
     } catch (error) {
         res.clearCookie('auth')
         res.clearCookie('refresh')

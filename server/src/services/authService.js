@@ -16,6 +16,8 @@ function buildAccessToken(user) {
 
     const payload = {
         id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
     }
 
@@ -31,7 +33,7 @@ function refreshExpiryDate() {
 
 export default {
     async register(authData) {
-        const { email, password } = authData;
+        const { firstName, lastName, email, password } = authData;
 
         const passwordHash = await bcrypt.hash(password, 10);
 
@@ -40,6 +42,8 @@ export default {
         try {
             user = await prisma.user.create({
                 data: {
+                    firstName,
+                    lastName,
                     email,
                     passwordHash,
                 },
