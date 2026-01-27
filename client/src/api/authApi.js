@@ -25,3 +25,20 @@ export const useLogin = () => {
         login
     }
 }
+
+export const useRegister = () => {
+    const abortRef = useRef(new AbortController())
+
+    const register = (email, password) =>
+        request.post(`${baseUrl}/register`, { email, password }, { signal: abortRef.current.signal })
+
+    useEffect(() => {
+        const abortController = abortRef.current;
+
+        return () => abortController.abort()
+    }, [])
+
+    return {
+        register
+    }
+}
