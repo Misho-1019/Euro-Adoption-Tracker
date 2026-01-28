@@ -1,32 +1,44 @@
-import React from 'react';
 import { Link, useNavigate } from "react-router";
 import { useRegister } from '../../api/authApi';
 import { useUserContext } from '../../context/UserContext';
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+const schema = yup.object({
+  firstName: yup.string().required('Name is required'),
+  lastName: yup.string().required('Last name is required'),
+  email: yup.string().email('Invalid email format').required('Email is required'),
+  password: yup.string().min(6, 'Password must be at least 6 characters long').required('Password is required'),
+  confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match').required('Confirm password field is required')
+})
 
 export default function Register() {
   const navigate = useNavigate()
-  const { register } = useRegister()
+  const { register: registerUser } = useRegister()
   const { userLoginHandler } = useUserContext()
 
-  const formAction = async (formData) => {
-    const values = Object.fromEntries(formData)
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting, errors }
+  } = useForm({
+    resolver: yupResolver(schema)
+  })
 
-    const confirmPassword = formData.get('confirmPassword')
+  const formAction = async (data) => {
+    try {
+      const authData = await registerUser(data.firstName, data.lastName, data.email, data.password)
 
-    if (confirmPassword !== values.password) {
-      console.error('Password mismatch!');
-      
-      return
+      userLoginHandler(authData)
+
+      toast.success('Registrated successfully!')
+
+      navigate('/')
+    } catch (error) {
+      toast.error(error.message || 'Registration failed! Please try again.')
     }
-
-    const authData = await register(
-      values.email,
-      values.password
-    )
-
-    userLoginHandler(authData)
-
-    navigate('/')
   }
 
   return (
@@ -41,7 +53,7 @@ export default function Register() {
           </p>
         </div>
         
-        <form className="mt-6 sm:mt-8 space-y-6" action={formAction}>
+        <form className="mt-6 sm:mt-8 space-y-6" onSubmit={handleSubmit(formAction)} noValidate>
           <div className="space-y-4 sm:space-y-5">
             {/* First Name Input */}
             <div>
@@ -55,8 +67,11 @@ export default function Register() {
                 autoComplete="given-name"
                 required
                 className="appearance-none block w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-slate-300 rounded-lg placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base transition duration-150 ease-in-out"
+                {...register('firstName')}
+                aria-invalid={!!errors.firstName}
                 placeholder="Jane"
               />
+              {errors.firstName && <p className='mt-1.5 text-sm text-red-600 font-medium'>{errors.firstName.message}</p>}
             </div>
 
             {/* Last Name Input */}
@@ -71,8 +86,11 @@ export default function Register() {
                 autoComplete="family-name"
                 required
                 className="appearance-none block w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-slate-300 rounded-lg placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base transition duration-150 ease-in-out"
+                {...register('lastName')}
+                aria-invalid={!!errors.lastName}
                 placeholder="Doe"
               />
+              {errors.lastName && <p className='mt-1.5 text-sm text-red-600 font-medium'>{errors.lastName.message}</p>}
             </div>
 
             {/* Email Input */}
@@ -87,8 +105,11 @@ export default function Register() {
                 autoComplete="email"
                 required
                 className="appearance-none block w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-slate-300 rounded-lg placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base transition duration-150 ease-in-out"
+                {...register('email')}
+                aria-invalid={!!errors.email}
                 placeholder="admin@eurotracker.eu"
               />
+              {errors.email && <p className='mt-1.5 text-sm text-red-600 font-medium'>{errors.email.message}</p>}
             </div>
 
             {/* Password Input */}
@@ -103,8 +124,11 @@ export default function Register() {
                 autoComplete="new-password"
                 required
                 className="appearance-none block w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-slate-300 rounded-lg placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base transition duration-150 ease-in-out"
+                {...register('password')}
+                aria-invalid={!!errors.password}
                 placeholder="••••••••"
               />
+              {errors.password && <p className='mt-1.5 text-sm text-red-600 font-medium'>{errors.password.message}</p>}
             </div>
 
             {/* Confirm Password Input */}
@@ -119,8 +143,11 @@ export default function Register() {
                 autoComplete="new-password"
                 required
                 className="appearance-none block w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-slate-300 rounded-lg placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base transition duration-150 ease-in-out"
+                {...register('confirmPassword')}
+                aria-invalid={!!errors.confirmPassword}
                 placeholder="••••••••"
               />
+              {errors.confirmPassword && <p className='mt-1.5 text-sm text-red-600 font-medium'>{errors.confirmPassword.message}</p>}
             </div>
           </div>
 
@@ -128,9 +155,10 @@ export default function Register() {
           <div>
             <button
               type="submit"
+              disabled={isSubmitting}
               className="group relative w-full flex justify-center py-2.5 sm:py-3 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-sm hover:shadow-md"
             >
-              Register Admin Account
+              {isSubmitting ? "Creating account..." : "Create account"}
             </button>
           </div>
 
