@@ -1,4 +1,5 @@
 import './App.css'
+import { Toaster } from "sonner";
 import { Routes, Route } from "react-router";
 import AppLayout from './pages/layouts/AppLayout'
 import Dashboard from './pages/dashboard/Dashboard'
@@ -24,6 +25,7 @@ import GuestGuard from './components/guards/guestGuard';
 function App() {
   return (
     <UserProvider>
+      <Toaster richColors position='top-right'/>
       <Routes>
   
         <Route element={<AppLayout />}>

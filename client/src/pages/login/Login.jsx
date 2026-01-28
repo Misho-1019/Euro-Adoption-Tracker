@@ -1,26 +1,42 @@
-import React, { useActionState } from 'react';
 import { Link, useNavigate } from "react-router";
 import { useLogin } from '../../api/authApi';
 import { useUserContext } from '../../context/UserContext';
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+const schema = yup.object({
+  email: yup.string().email('Invalid email format').required('Email is required'),
+  password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
+})
 
 export default function Login() {
   const navigate = useNavigate()
   const { login } = useLogin()
   const { userLoginHandler } = useUserContext()
 
-  const loginHandler = async (_, formData) => {
-    const values = Object.fromEntries(formData)
-
-    const authData = await login(values.email, values.password)
-
-    userLoginHandler(authData)
-
-    navigate('/')
-  }
-
-  const [_, loginAction, isPending] = useActionState(loginHandler, {
-    email: '', password: ''
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting, errors }
+  } = useForm({
+    resolver: yupResolver(schema)
   })
+
+  const loginHandler = async (data) => {
+    try {
+      const authData = await login(data.email, data.password)
+      
+      userLoginHandler(authData)
+
+      toast.success('Welcome back!')
+
+      navigate('/')
+    } catch (error) {
+      toast.error(error.message || 'Login failed. Please try again.')
+    }
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 py-6 px-4 sm:py-12 sm:px-6 lg:px-8">
@@ -34,7 +50,7 @@ export default function Login() {
           </p>
         </div>
         
-        <form className="mt-6 sm:mt-8 space-y-6" action={loginAction}>
+        <form className="mt-6 sm:mt-8 space-y-6" onSubmit={handleSubmit(loginHandler)}>
           <div className="space-y-4 sm:space-y-5">
             {/* Email Input */}
             <div>
@@ -48,8 +64,11 @@ export default function Login() {
                 autoComplete="email"
                 required
                 className="appearance-none block w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-slate-300 rounded-lg placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base transition duration-150 ease-in-out"
+                {...register('email')}
+                aria-invalid={!!errors.email}
                 placeholder="admin@eurotracker.eu"
               />
+              {errors.email && <p className="mt-1.5 text-sm text-red-600 font-medium">{errors.email.message}</p>}
             </div>
 
             {/* Password Input */}
@@ -64,8 +83,11 @@ export default function Login() {
                 autoComplete="current-password"
                 required
                 className="appearance-none block w-full px-3 py-2.5 sm:px-4 sm:py-3 border border-slate-300 rounded-lg placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base transition duration-150 ease-in-out"
+                {...register('password')}
+                aria-invalid={!!errors.password}
                 placeholder="••••••••"
               />
+              {errors.password && <p className="mt-1.5 text-sm text-red-600 font-medium">{errors.password.message}</p>}
             </div>
           </div>
 
@@ -73,10 +95,10 @@ export default function Login() {
           <div>
             <button
               type="submit"
-              disabled={isPending}
+              disabled={isSubmitting}
               className="group relative w-full flex justify-center py-2.5 sm:py-3 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-sm hover:shadow-md"
             >
-              Sign in to Dashboard
+              {isSubmitting ? "Signing in..." : "Sign in to Dashboard"}
             </button>
           </div>
 
