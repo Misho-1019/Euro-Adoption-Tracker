@@ -1,146 +1,106 @@
-import React from 'react';
-import { 
-  BanknotesIcon, 
-  CalendarIcon, 
-  CheckCircleIcon,
-  ExclamationTriangleIcon,
-  ArrowPathIcon
-} from '@heroicons/react/24/outline';
+import React from "react";
+import { ArrowPathIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
 
 export default function AdminRate() {
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
+    <div className="mx-auto max-w-5xl space-y-8">
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-bold text-slate-900">Manage Exchange Rate</h1>
-        <p className="mt-2 text-slate-500">View and update the official BGN to EUR fixed exchange rate.</p>
+        <h1 className="text-3xl font-semibold text-[#003399]">Exchange Rate</h1>
+        <p className="mt-2 text-slate-500">
+          Official BGN to EUR fixed exchange rate used across the system.
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Left Column: Current Status (1/3 width on md) */}
-        <div className="md:col-span-1 space-y-6">
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-            <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-4">Current Rate</h3>
-            
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-4xl font-bold text-[#003399]">1.95583</span>
-            </div>
-            <div className="flex items-center space-x-2 text-sm text-slate-500 mb-6">
-              <span>BGN per 1 EUR</span>
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+        {/* Left column: Current status */}
+        <div className="space-y-6 md:col-span-1">
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                Current rate
+              </h3>
+              <span className="rounded-full border border-[rgba(255,214,23,0.35)] bg-[rgba(255,214,23,0.2)] px-2 py-0.5 text-xs font-medium text-slate-800">
+                EU fixed rate
+              </span>
             </div>
 
-            <div className="space-y-3 pt-4 border-t border-slate-100">
-              <div className="flex justify-between items-center text-sm">
+            <div className="mb-2 flex items-end justify-between">
+              <span className="text-4xl font-bold text-[#003399]">1.95583</span>
+            </div>
+            <div className="mb-6 text-sm text-slate-500">BGN per 1 EUR</div>
+
+            <div className="space-y-3 border-t border-slate-100 pt-4">
+              <div className="flex items-center justify-between text-sm">
                 <span className="text-slate-500">Status</span>
-                 <span className="flex items-center text-emerald-700 font-medium bg-emerald-50 px-2.5 py-1 rounded-full text-xs">
-                   <CheckCircleIcon className="w-3.5 h-3.5 mr-1" />
-                   Active
-                 </span>
+                <span className="flex items-center rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700">
+                  <CheckCircleIcon className="mr-1 h-3.5 w-3.5" />
+                  Active
+                </span>
               </div>
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-slate-500">Effective From</span>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-slate-500">Effective from</span>
                 <span className="font-medium text-slate-900">Jan 1, 1999</span>
               </div>
-              <div className="flex justify-between items-center text-sm">
+              <div className="flex items-center justify-between text-sm">
                 <span className="text-slate-500">Source</span>
                 <span className="font-medium text-slate-900">BNB</span>
               </div>
             </div>
           </div>
 
-          <div className="bg-blue-50 border border-blue-100 rounded-xl p-4">
-             <div className="flex items-start">
-               <ArrowPathIcon className="w-5 h-5 text-[#003399] mt-0.5 mr-3 shrink-0" />
-               <p className="text-sm text-blue-900">
-                 Changes to the exchange rate are propagated immediately to all calculations in the system.
-               </p>
-             </div>
+          <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4">
+            <div className="flex items-start">
+              <ArrowPathIcon className="mr-3 mt-0.5 h-5 w-5 shrink-0 text-[#003399]" />
+              <p className="text-sm text-blue-900">
+                This rate is used immediately in all EUR calculations (prices,
+                basket totals, compliance checks, and analytics).
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Right Column: Update Form (2/3 width on md) */}
+        {/* Right column: Read-only details */}
         <div className="md:col-span-2">
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-            <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/50">
-              <h3 className="font-semibold text-slate-900">Set New Exchange Rate</h3>
+          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div className="border-b border-slate-100 bg-slate-50/50 px-6 py-4">
+              <h3 className="font-semibold text-slate-900">Details</h3>
             </div>
-            
-            <div className="p-6 space-y-6">
-              {/* Rate Input */}
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-slate-700">
-                  New Exchange Rate (BGN)
-                </label>
-                <div className="relative rounded-md shadow-sm">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                    <BanknotesIcon className="h-5 w-5 text-slate-400" aria-hidden="true" />
-                  </div>
-                  <input
-                    type="text"
-                    name="rate"
-                    id="rate"
-                    className="block w-full rounded-lg border-slate-300 pl-10 focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2.5"
-                    placeholder="1.95583"
-                    defaultValue="1.95583"
-                  />
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                    <span className="text-slate-500 sm:text-sm">BGN</span>
-                  </div>
-                </div>
-                <p className="text-xs text-slate-500">
-                  Official fixed rate according to the Bulgarian National Bank.
+
+            <div className="space-y-4 p-6">
+              <div className="rounded-xl border-l-4 border-[#FFD617] border-slate-200 bg-white p-4">
+                <p className="text-sm text-slate-700">
+                  Your backend currently exposes only <span className="font-medium">GET /rate/current</span>.
+                  This page is intentionally read-only.
                 </p>
               </div>
 
-              {/* Effective Date Input */}
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-slate-700">
-                  Effective Date & Time
-                </label>
-                <div className="relative rounded-md shadow-sm">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                    <CalendarIcon className="h-5 w-5 text-slate-400" aria-hidden="true" />
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                  <div className="text-xs font-medium text-slate-500">Endpoint</div>
+                  <div className="mt-1 font-semibold text-slate-900">/rate/current</div>
+                </div>
+
+                <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                  <div className="text-xs font-medium text-slate-500">Applies to</div>
+                  <div className="mt-1 text-sm text-slate-700">
+                    Prices, basket quote, compliance, analytics
                   </div>
-                  <input
-                    type="datetime-local"
-                    name="effective-date"
-                    id="effective-date"
-                    className="block w-full rounded-lg border-slate-300 pl-10 focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2.5 text-slate-600"
-                  />
                 </div>
               </div>
 
-              {/* Warning Box */}
-              <div className="rounded-lg bg-amber-50 p-4 border border-amber-100">
-                <div className="flex">
-                  <div className="shrink-0">
-                    <ExclamationTriangleIcon className="h-5 w-5 text-amber-500" aria-hidden="true" />
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-sm font-medium text-amber-800">Warning: Global Impact</h3>
-                    <div className="mt-2 text-sm text-amber-700">
-                      <p>
-                        Updating the exchange rate will trigger a recalculation of all Euro prices across the entire product catalog. This action cannot be undone easily.
-                      </p>
-                    </div>
-                  </div>
-                </div>
+              <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                <div className="text-xs font-medium text-slate-500">Note</div>
+                <p className="mt-1 text-sm text-slate-700">
+                  If you later add admin endpoints (e.g. POST /rate), we can extend
+                  this page with a controlled update form and a history list.
+                </p>
               </div>
             </div>
 
-            {/* Actions */}
-            <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end space-x-3">
-              <button
-                type="button"
-                className="px-4 py-2 border border-slate-300 rounded-lg shadow-sm text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#003399] hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Save New Rate
+            <div className="flex items-center justify-end border-t border-slate-100 bg-slate-50 px-6 py-4">
+              <button className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
+                Refresh
               </button>
             </div>
           </div>
@@ -148,4 +108,4 @@ export default function AdminRate() {
       </div>
     </div>
   );
-};
+}

@@ -1,219 +1,301 @@
-import React from 'react';
+import React from "react";
 
-export default function Dashboard() {
-  // --- Mock Data ---
-  const currentRate = {
-    value: "25.30",
-    pair: "CZK/EUR",
-    date: "25 Jan 2026",
-    trend: "stable"
+/**
+ * Dashboard (UI-only, mock data)
+ * Purpose: one glance overview across rate, dual pricing, compliance, basket, analytics.
+ * No charts for now (keeps it clean), but includes placeholders for future.
+ */
+
+const mock = {
+  rate: { value: "1.95583", source: "BNB", effectiveFrom: "1999-01-01" },
+  dualPricing: { enabled: true, start: "2025-01-01", end: "2026-12-31" },
+  catalog: { products: 100, categories: 10, priced: 97, missingTags: 3 },
+  compliance: {
+    lastRun: "2026-01-28 14:05",
+    checksToday: 18,
+    violationsToday: 4,
+    topCodes: [
+      { code: "EUR_MISSING", count: 2 },
+      { code: "EUR_MISMATCH", count: 1 },
+      { code: "BGN_MISSING", count: 1 },
+    ],
+  },
+  basket: {
+    lastQuote: "2026-01-29 09:10",
+    totalBgn: "42.80",
+    totalEurDisplay: "21.89",
+    roundingImpact: "-0.01",
+  },
+  analytics: {
+    periodA: { start: "2026-01-01", end: "2026-02-01" },
+    periodB: { start: "2026-03-01", end: "2026-05-01" },
+    avgDisplayChangePct: "17.57",
+    spikes: 2,
+  },
+  tasks: [
+    { label: "Set prices for missing tags", tone: "yellow", value: "3 products" },
+    { label: "Review spikes", tone: "blue", value: "2 flagged" },
+    { label: "Check rounding config", tone: "slate", value: "HALF_UP" },
+  ],
+};
+
+function Badge({ tone = "slate", children }) {
+  const base =
+    "inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium";
+
+  const tones = {
+    slate: "border-slate-200 bg-slate-50 text-slate-700",
+    blue: "border-blue-200 bg-blue-50 text-blue-800",
+    yellow:
+      "border-[rgba(255,214,23,0.35)] bg-[rgba(255,214,23,0.2)] text-slate-800",
+    green: "border-green-200 bg-green-50 text-green-700",
+    red: "border-red-200 bg-red-50 text-red-700",
   };
 
-  const dualPricing = {
-    isEnabled: true,
-    status: "Mandatory Period",
-    daysRemaining: 156,
-    compliance: "100%"
-  };
+  return <span className={`${base} ${tones[tone] || tones.slate}`}>{children}</span>;
+}
 
-  const catalogStats = {
-    totalProducts: 1420,
-    totalCategories: 85,
-    lastSync: "Today, 09:42"
-  };
-
-  const systemHealth = [
-    { id: 1, name: "ECB Rate Sync", status: "operational", lastCheck: "09:00 AM" },
-    { id: 2, name: "Price Calculator", status: "operational", lastCheck: "09:41 AM" },
-    { id: 3, name: "Catalog Index", status: "warning", lastCheck: "08:15 AM", message: "High latency detected" },
-    { id: 4, name: "Audit Log Service", status: "operational", lastCheck: "09:42 AM" },
-    { id: 5, name: "User Auth", status: "operational", lastCheck: "09:42 AM" },
-  ];
-
-  const quickActions = [
-    "Manage Exchange Rates",
-    "Generate Compliance Report", 
-    "System Settings"
-  ];
-
+function Card({ title, right, children }) {
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans">
-      {/* --- Top Header --- */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div>
-            <h1 className="text-xl font-bold text-blue-900 tracking-tight">
-              Euro Adoption Tracker
-            </h1>
-            <p className="text-xs text-slate-500 uppercase tracking-wider font-medium mt-0.5">
-              Official Administration Dashboard
-            </p>
-          </div>
-          <div className="flex items-center space-x-4">
-            <span className="text-sm text-slate-500">Administrator</span>
-            <div className="h-8 w-8 rounded-full bg-blue-900 text-white flex items-center justify-center text-sm font-semibold">
-              AD
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        
-        {/* --- Page Title Section --- */}
-        <div className="flex items-end justify-between border-b border-slate-200 pb-6">
-          <div>
-            <h2 className="text-3xl font-semibold text-slate-900">Dashboard</h2>
-            <p className="mt-2 text-slate-500">
-              System overview and key performance indicators.
-            </p>
-          </div>
-          <div className="text-right text-sm text-slate-400">
-            Last updated: {currentRate.date}
-          </div>
-        </div>
-
-        {/* --- KPI Grid --- */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          
-          {/* Card 1: Exchange Rate */}
-          <div className="bg-white rounded-lg border border-slate-200 p-6 shadow-sm flex flex-col justify-between">
-            <div>
-              <p className="text-sm font-medium text-slate-500 uppercase tracking-wide">
-                Official Exchange Rate
-              </p>
-              <div className="mt-2 flex items-baseline">
-                <span className="text-3xl font-bold text-blue-900">{currentRate.value}</span>
-                <span className="ml-2 text-sm font-medium text-slate-600">{currentRate.pair}</span>
-              </div>
-            </div>
-            <div className="mt-4 flex items-center text-sm text-slate-500">
-              <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-              Source: ECB (Official)
-            </div>
-          </div>
-
-          {/* Card 2: Dual Pricing Status */}
-          <div className="bg-white rounded-lg border border-slate-200 p-6 shadow-sm flex flex-col justify-between">
-            <div>
-              <p className="text-sm font-medium text-slate-500 uppercase tracking-wide">
-                Dual Pricing Mode
-              </p>
-              <div className="mt-2">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-blue-50 text-blue-800">
-                  {dualPricing.status}
-                </span>
-              </div>
-            </div>
-            <div className="mt-4 text-sm text-slate-600">
-              <span className="font-semibold text-slate-900">{dualPricing.daysRemaining}</span> days remaining
-            </div>
-          </div>
-
-          {/* Card 3: Products */}
-          <div className="bg-white rounded-lg border border-slate-200 p-6 shadow-sm flex flex-col justify-between">
-            <div>
-              <p className="text-sm font-medium text-slate-500 uppercase tracking-wide">
-                Total Products
-              </p>
-              <div className="mt-2">
-                <span className="text-3xl font-bold text-slate-900">
-                  {catalogStats.totalProducts.toLocaleString()}
-                </span>
-              </div>
-            </div>
-            <div className="mt-4 text-sm text-slate-500">
-              Active in catalog
-            </div>
-          </div>
-
-          {/* Card 4: Categories */}
-          <div className="bg-white rounded-lg border border-slate-200 p-6 shadow-sm flex flex-col justify-between">
-            <div>
-              <p className="text-sm font-medium text-slate-500 uppercase tracking-wide">
-                Categories
-              </p>
-              <div className="mt-2">
-                <span className="text-3xl font-bold text-slate-900">
-                  {catalogStats.totalCategories}
-                </span>
-              </div>
-            </div>
-            <div className="mt-4 text-sm text-slate-500">
-               Organized structure
-            </div>
-          </div>
-
-        </div>
-
-        {/* --- Secondary Section: Grid 2 Columns (Main + Sidebar) --- */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
-          {/* Left Column: System Status (2 cols wide) */}
-          <div className="lg:col-span-2 bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
-            <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
-              <h3 className="text-lg font-medium text-blue-900">System Status</h3>
-              <span className="text-xs font-semibold uppercase text-slate-400 bg-slate-100 px-2 py-1 rounded">
-                Live Monitor
-              </span>
-            </div>
-            <div className="divide-y divide-slate-100">
-              {systemHealth.map((item) => (
-                <div key={item.id} className="px-6 py-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
-                  <div className="flex items-center">
-                    <div className={`w-2.5 h-2.5 rounded-full mr-3 ${
-                      item.status === 'operational' ? 'bg-green-500' : 
-                      item.status === 'warning' ? 'bg-amber-500' : 'bg-red-500'
-                    }`}></div>
-                    <span className="text-sm font-medium text-slate-700">{item.name}</span>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                     {item.message && (
-                       <span className="text-xs text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-100">
-                         {item.message}
-                       </span>
-                     )}
-                    <span className="text-sm text-slate-400 font-mono">{item.lastCheck}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="bg-slate-50 px-6 py-3 border-t border-slate-100 text-xs text-slate-500 text-center">
-              System health checks run every 60 seconds automatically.
-            </div>
-          </div>
-
-          {/* Right Column: Quick Actions & Links (1 col wide) */}
-          <div className="space-y-6">
-            
-            {/* Quick Actions Panel */}
-            <div className="bg-white rounded-lg border border-slate-200 shadow-sm p-6">
-              <h3 className="text-lg font-medium text-blue-900 mb-4">Quick Actions</h3>
-              <ul className="space-y-3">
-                {quickActions.map((action, idx) => (
-                  <li key={idx}>
-                    <button className="w-full text-left px-4 py-2 text-sm font-medium text-slate-700 bg-slate-50 hover:bg-slate-100 hover:text-blue-900 rounded border border-slate-200 transition-colors duration-150">
-                      {action}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Regulatory Notice */}
-            <div className="bg-blue-900 rounded-lg p-6 text-white shadow-md">
-              <h3 className="text-sm font-bold uppercase tracking-wider opacity-80 mb-2">
-                Compliance Notice 2026/EU
-              </h3>
-              <p className="text-sm opacity-90 leading-relaxed">
-                Dual display of prices is mandatory for all consumer products until 
-                <strong> July 1st, 2026</strong>. Ensure daily exchange rate synchronization.
-              </p>
-            </div>
-
-          </div>
-        </div>
-      </main>
+    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <div className="mb-4 flex items-start justify-between gap-3">
+        <div className="text-sm font-semibold text-slate-800">{title}</div>
+        {right}
+      </div>
+      {children}
     </div>
   );
-};
+}
+
+function Stat({ label, value, emphasize }) {
+  return (
+    <div>
+      <div className="text-xs font-medium text-slate-500">{label}</div>
+      <div
+        className={`mt-1 text-2xl font-semibold ${
+          emphasize ? "text-[#003399]" : "text-slate-900"
+        }`}
+      >
+        {value}
+      </div>
+    </div>
+  );
+}
+
+export default function Dashboard() {
+  return (
+    <div className="min-h-screen bg-slate-50">
+      <div className="mx-auto max-w-7xl p-6 md:p-8">
+        {/* Header */}
+        <div className="mb-6 border-t-4 border-[#FFD617] pt-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <h1 className="text-3xl font-semibold text-[#003399]">Dashboard</h1>
+            <Badge tone="yellow">EU overview</Badge>
+          </div>
+          <p className="mt-1 text-sm text-slate-500">
+            One-glance monitoring for rate, pricing, compliance, basket totals, and
+            analytics.
+          </p>
+        </div>
+
+        {/* Top KPI row */}
+        <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <Card title="Exchange rate" right={<Badge tone="blue">/rate/current</Badge>}>
+            <div className="flex items-end justify-between">
+              <div className="text-4xl font-bold text-[#003399]">
+                {mock.rate.value}
+              </div>
+              <div className="text-sm text-slate-500">BGN per 1 EUR</div>
+            </div>
+            <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-600">
+              <span>Source:</span>
+              <span className="font-medium text-slate-900">{mock.rate.source}</span>
+              <span className="text-slate-400">•</span>
+              <span>Effective:</span>
+              <span className="font-medium text-slate-900">
+                {mock.rate.effectiveFrom}
+              </span>
+            </div>
+          </Card>
+
+          <Card
+            title="Dual pricing"
+            right={<Badge tone={mock.dualPricing.enabled ? "yellow" : "slate"}>{mock.dualPricing.enabled ? "Enabled" : "Disabled"}</Badge>}
+          >
+            <Stat
+              label="Period"
+              value={`${mock.dualPricing.start} – ${mock.dualPricing.end}`}
+            />
+            <div className="mt-3 text-xs text-slate-500">
+              During this period, price tags should show both BGN and EUR.
+            </div>
+          </Card>
+
+          <Card title="Catalog health" right={<Badge tone="blue">/products</Badge>}>
+            <div className="grid grid-cols-2 gap-3">
+              <Stat label="Products" value={mock.catalog.products} emphasize />
+              <Stat label="Categories" value={mock.catalog.categories} />
+              <Stat label="Priced" value={mock.catalog.priced} />
+              <Stat label="Missing tags" value={mock.catalog.missingTags} />
+            </div>
+          </Card>
+
+          <Card title="Compliance today" right={<Badge tone="yellow">/compliance/check</Badge>}>
+            <div className="grid grid-cols-2 gap-3">
+              <Stat label="Checks" value={mock.compliance.checksToday} emphasize />
+              <Stat label="Violations" value={mock.compliance.violationsToday} />
+            </div>
+            <div className="mt-3 text-xs text-slate-500">
+              Last run: {mock.compliance.lastRun}
+            </div>
+          </Card>
+        </div>
+
+        {/* Main grid */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          {/* Left: Tasks */}
+          <div className="lg:col-span-1 space-y-6">
+            <Card title="Action items" right={<Badge tone="yellow">Priority</Badge>}>
+              <div className="space-y-3">
+                {mock.tasks.map((t) => (
+                  <div
+                    key={t.label}
+                    className="flex items-center justify-between rounded-xl border border-slate-200 bg-white p-3"
+                  >
+                    <div>
+                      <div className="text-sm font-medium text-slate-900">{t.label}</div>
+                      <div className="text-xs text-slate-500">Suggested next step</div>
+                    </div>
+                    <Badge tone={t.tone}>{t.value}</Badge>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-4 rounded-xl border-l-4 border-[#FFD617] border-slate-200 bg-white p-3 text-sm text-slate-700">
+                Tip: keep prices updated regularly to improve analytics reliability.
+              </div>
+            </Card>
+
+            <Card title="Compliance codes" right={<Badge tone="slate">Today</Badge>}>
+              <div className="space-y-2">
+                {mock.compliance.topCodes.map((c) => (
+                  <div key={c.code} className="flex items-center justify-between">
+                    <div className="text-sm text-slate-700">{c.code}</div>
+                    <div className="text-sm font-semibold text-slate-900">
+                      {c.count}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 flex items-center justify-end">
+                <button className="rounded-lg bg-[#003399] px-3 py-2 text-sm font-medium text-white hover:opacity-90">
+                  Open compliance
+                </button>
+              </div>
+            </Card>
+          </div>
+
+          {/* Middle: Basket + Analytics */}
+          <div className="lg:col-span-1 space-y-6">
+            <Card title="Latest basket quote" right={<Badge tone="blue">/basket/quote</Badge>}>
+              <div className="grid grid-cols-2 gap-3">
+                <Stat label="Total (BGN)" value={mock.basket.totalBgn} />
+                <Stat label="Total (EUR display)" value={mock.basket.totalEurDisplay} emphasize />
+              </div>
+              <div className="mt-3 flex items-center justify-between text-sm">
+                <span className="text-slate-500">Rounding impact</span>
+                <span className="font-medium text-slate-900">
+                  {mock.basket.roundingImpact}
+                </span>
+              </div>
+              <div className="mt-3 text-xs text-slate-500">Last quote: {mock.basket.lastQuote}</div>
+              <div className="mt-4 flex items-center justify-end gap-2">
+                <button className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-50">
+                  View basket
+                </button>
+                <button className="rounded-lg bg-[#003399] px-3 py-2 text-sm font-medium text-white hover:opacity-90">
+                  New quote
+                </button>
+              </div>
+            </Card>
+
+            <Card title="Analytics snapshot" right={<Badge tone="blue">/analytics/summary</Badge>}>
+              <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge tone="yellow">Period A</Badge>
+                  <span className="font-medium">{mock.analytics.periodA.start}</span>
+                  <span className="text-slate-400">–</span>
+                  <span className="font-medium">{mock.analytics.periodA.end}</span>
+                </div>
+                <div className="mt-2 flex flex-wrap items-center gap-2">
+                  <Badge tone="yellow">Period B</Badge>
+                  <span className="font-medium">{mock.analytics.periodB.start}</span>
+                  <span className="text-slate-400">–</span>
+                  <span className="font-medium">{mock.analytics.periodB.end}</span>
+                </div>
+              </div>
+
+              <div className="mt-4 grid grid-cols-2 gap-3">
+                <Stat label="Avg change (display %)" value={mock.analytics.avgDisplayChangePct} emphasize />
+                <Stat label="Spikes flagged" value={mock.analytics.spikes} />
+              </div>
+
+              <div className="mt-4 flex items-center justify-end">
+                <button className="rounded-lg bg-[#003399] px-3 py-2 text-sm font-medium text-white hover:opacity-90">
+                  Open analytics
+                </button>
+              </div>
+            </Card>
+          </div>
+
+          {/* Right: Quick links */}
+          <div className="lg:col-span-1 space-y-6">
+            <Card title="Quick actions" right={<Badge tone="yellow">EU</Badge>}>
+              <div className="grid grid-cols-1 gap-3">
+                <button className="rounded-xl border border-slate-200 bg-white p-4 text-left hover:bg-slate-50">
+                  <div className="text-sm font-semibold text-slate-900">Add product</div>
+                  <div className="mt-1 text-sm text-slate-500">POST /products</div>
+                </button>
+                <button className="rounded-xl border border-slate-200 bg-white p-4 text-left hover:bg-slate-50">
+                  <div className="text-sm font-semibold text-slate-900">Create category</div>
+                  <div className="mt-1 text-sm text-slate-500">POST /categories</div>
+                </button>
+                <button className="rounded-xl border border-slate-200 bg-white p-4 text-left hover:bg-slate-50">
+                  <div className="text-sm font-semibold text-slate-900">Adjust settings</div>
+                  <div className="mt-1 text-sm text-slate-500">PUT /settings/:key</div>
+                </button>
+                <button className="rounded-xl border border-slate-200 bg-white p-4 text-left hover:bg-slate-50">
+                  <div className="text-sm font-semibold text-slate-900">Run compliance check</div>
+                  <div className="mt-1 text-sm text-slate-500">POST /compliance/check</div>
+                </button>
+              </div>
+
+              <div className="mt-4 rounded-xl border-l-4 border-[#FFD617] border-slate-200 bg-white p-3 text-sm text-slate-700">
+                You can keep this dashboard minimal now and add charts later when real data flows in.
+              </div>
+            </Card>
+
+            <Card title="System status" right={<Badge tone="green">OK</Badge>}>
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-600">API</span>
+                  <span className="font-medium text-slate-900">Connected</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-600">Dual pricing</span>
+                  <span className="font-medium text-slate-900">
+                    {mock.dualPricing.enabled ? "Active" : "Inactive"}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-600">Rounding</span>
+                  <span className="font-medium text-slate-900">HALF_UP</span>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

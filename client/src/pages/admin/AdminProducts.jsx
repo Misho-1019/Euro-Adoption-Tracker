@@ -1,167 +1,193 @@
-import React from 'react';
-import { 
-  MagnifyingGlassIcon,
-  FunnelIcon,
-  PlusIcon,
-  PencilSquareIcon,
-  CurrencyEuroIcon,
-  EllipsisVerticalIcon
-} from '@heroicons/react/24/outline';
+import React from "react";
+
+/**
+ * Create Product page (UI-only, mock data)
+ * Intended to match: POST /products
+ * Fields (assumed): name, unit, categoryId
+ *
+ * No API calls, no submit logic.
+ */
+
+const mockCategories = [
+  { id: 1, name: "Food" },
+  { id: 2, name: "Dairy" },
+  { id: 3, name: "Bakery" },
+  { id: 4, name: "Fruit" },
+  { id: 5, name: "Beverages" },
+];
+
+function Badge({ tone = "slate", children }) {
+  const base =
+    "inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium";
+
+  const tones = {
+    slate: "border-slate-200 bg-slate-50 text-slate-700",
+    blue: "border-blue-200 bg-blue-50 text-blue-800",
+    yellow:
+      "border-[rgba(255,214,23,0.35)] bg-[rgba(255,214,23,0.2)] text-slate-800",
+    green: "border-green-200 bg-green-50 text-green-700",
+    red: "border-red-200 bg-red-50 text-red-700",
+  };
+
+  return <span className={`${base} ${tones[tone] || tones.slate}`}>{children}</span>;
+}
+
+function SectionCard({ title, children, hint }) {
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        <h2 className="text-lg font-semibold text-slate-900">{title}</h2>
+        {hint ? <Badge tone="yellow">{hint}</Badge> : null}
+      </div>
+      <div className="mt-4 space-y-4">{children}</div>
+    </div>
+  );
+}
 
 export default function AdminProducts() {
-  // Mock Data
-  const products = [
-    { id: 1, name: 'White Bread', category: 'Bakery', unit: 'Loaf (500g)', priceBgn: 1.80, priceEur: 0.92, effectiveDate: '2024-01-01' },
-    { id: 2, name: 'Cow Cheese', category: 'Dairy', unit: 'kg', priceBgn: 16.50, priceEur: 8.44, effectiveDate: '2024-01-15' },
-    { id: 3, name: 'Yogurt 3.6%', category: 'Dairy', unit: '400g', priceBgn: 1.45, priceEur: 0.74, effectiveDate: '2024-01-01' },
-    { id: 4, name: 'Sunflower Oil', category: 'Pantry', unit: 'Liter', priceBgn: 3.20, priceEur: 1.64, effectiveDate: '2023-12-20' },
-    { id: 5, name: 'Chicken Breast', category: 'Meat', unit: 'kg', priceBgn: 12.90, priceEur: 6.60, effectiveDate: '2024-01-10' },
-    { id: 6, name: 'Tomatoes', category: 'Produce', unit: 'kg', priceBgn: 4.50, priceEur: 2.30, effectiveDate: '2024-01-26' },
-  ];
-
   return (
-    <div className="space-y-8">
-      {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900">Manage Products</h1>
-          <p className="mt-2 text-slate-500">Review and update the product catalog and pricing.</p>
+    <div className="min-h-screen bg-slate-50">
+      <div className="mx-auto max-w-5xl p-6 md:p-8">
+        {/* Header */}
+        <div className="mb-6 border-t-4 border-[#FFD617] pt-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <h1 className="text-3xl font-semibold text-[#003399]">
+              Create product
+            </h1>
+            <Badge tone="blue">POST /products</Badge>
+          </div>
+          <p className="mt-1 text-sm text-slate-500">
+            Add a new product to the catalog. Pricing is set separately.
+          </p>
         </div>
-      </div>
 
-      {/* Main Content Card */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-        
-        {/* Toolbar */}
-        <div className="p-4 border-b border-slate-200 bg-slate-50/50 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          
-          {/* Search & Filter */}
-          <div className="flex items-center gap-4 flex-1">
-            <div className="relative flex-1 max-w-sm">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <MagnifyingGlassIcon className="h-5 w-5 text-slate-400" aria-hidden="true" />
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          {/* Form */}
+          <div className="lg:col-span-2">
+            <SectionCard title="Product details" hint="EU catalog">
+              {/* Name */}
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-slate-700">
+                  Product name
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. Milk 1L"
+                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-blue-500 focus:ring-blue-500"
+                  defaultValue=""
+                />
+                <p className="text-xs text-slate-500">
+                  Use a clear, consumer-facing name.
+                </p>
               </div>
-              <input
-                type="text"
-                className="block w-full rounded-lg border-slate-300 pl-10 focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2"
-                placeholder="Search products..."
-              />
-            </div>
-            
-            <div className="relative">
-               <button className="flex items-center gap-2 px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50">
-                 <FunnelIcon className="w-4 h-4 text-slate-500" />
-                 <span>Filter</span>
-               </button>
-            </div>
-          </div>
 
-          {/* Actions */}
-          <div>
-            <button className="flex items-center justify-center gap-2 px-4 py-2 bg-[#003399] text-white rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors shadow-sm">
-              <PlusIcon className="w-5 h-5" />
-              <span>Add Product</span>
-            </button>
-          </div>
-        </div>
+              {/* Unit */}
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-slate-700">
+                  Unit (free text)
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. kg, l, pcs"
+                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-blue-500 focus:ring-blue-500"
+                  defaultValue=""
+                />
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs text-slate-500">Common:</span>
+                  <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-700">
+                    kg
+                  </span>
+                  <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-700">
+                    l
+                  </span>
+                  <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-700">
+                    pcs
+                  </span>
+                  <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-700">
+                    g
+                  </span>
+                </div>
+                <p className="text-xs text-slate-500">
+                  If your backend later restricts units, we can convert this into a
+                  dropdown.
+                </p>
+              </div>
 
-        {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-slate-200">
-            <thead className="bg-slate-50">
-              <tr>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  Product Name
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+              {/* Category */}
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-slate-700">
                   Category
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  Unit
-                </th>
-                 <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  Price (BGN)
-                </th>
-                <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  Price (EUR)
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider pl-8">
-                  Effective From
-                </th>
-                <th scope="col" className="relative px-6 py-3">
-                  <span className="sr-only">Actions</span>
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-slate-200">
-              {products.map((product) => (
-                <tr key={product.id} className="hover:bg-slate-50 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-slate-900">{product.name}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800">
-                      {product.category}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
-                    {product.unit}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-right font-medium text-slate-900">
-                    {product.priceBgn.toFixed(2)} лв.
-                  </td>
-                   <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-[#003399] font-medium">
-                    €{product.priceEur.toFixed(2)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 pl-8">
-                    {product.effectiveDate}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <div className="flex items-center justify-end gap-2">
-                       <button className="text-slate-400 hover:text-[#003399] p-1">
-                          <PencilSquareIcon className="w-5 h-5" />
-                       </button>
-                       <button className="text-slate-400 hover:text-[#003399] p-1">
-                          <CurrencyEuroIcon className="w-5 h-5" />
-                       </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        
-        {/* Pagination (Mock) */}
-        <div className="bg-white px-4 py-3 border-t border-slate-200 flex items-center justify-between sm:px-6">
-          <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-            <div>
-              <p className="text-sm text-slate-700">
-                Showing <span className="font-medium">1</span> to <span className="font-medium">6</span> of <span className="font-medium">1,248</span> results
-              </p>
+                </label>
+                <select className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-blue-500 focus:ring-blue-500">
+                  {mockCategories.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.name}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-xs text-slate-500">
+                  Categories come from <span className="font-medium">GET /categories</span>.
+                </p>
+              </div>
+
+              {/* Yellow note */}
+              <div className="rounded-xl border-l-4 border-[#FFD617] border-slate-200 bg-white p-3 text-sm text-slate-700">
+                After creating a product, you’ll typically set its first price. During
+                dual pricing, both BGN and EUR price tags must be consistent.
+              </div>
+            </SectionCard>
+
+            {/* Actions */}
+            <div className="mt-6 flex items-center justify-end gap-3">
+              <button className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
+                Cancel
+              </button>
+              <button className="rounded-lg bg-[#003399] px-4 py-2 text-sm font-medium text-white hover:opacity-90">
+                Create product
+              </button>
             </div>
-            <div>
-               <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                <button className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-slate-300 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50">
-                  Previous
-                </button>
-                <button className="relative inline-flex items-center px-4 py-2 border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50">
-                  1
-                </button>
-                <button className="relative inline-flex items-center px-4 py-2 border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50">
-                  2
-                </button>
-                <button className="relative inline-flex items-center px-4 py-2 border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50">
-                  3
-                </button>
-                 <button className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-slate-300 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50">
-                  Next
-                </button>
-              </nav>
+          </div>
+
+          {/* Right rail / preview */}
+          <div className="lg:col-span-1 space-y-6">
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="flex items-center justify-between">
+                <div className="text-sm font-semibold text-slate-800">
+                  Request preview
+                </div>
+                <Badge tone="yellow">Mock</Badge>
+              </div>
+
+              <div className="mt-4 rounded-xl bg-slate-50 p-3 text-xs text-slate-700">
+                <div className="font-semibold text-slate-800">POST /products</div>
+                <pre className="mt-2 whitespace-pre-wrap leading-5 text-slate-700">
+{`{
+  "name": "Milk 1L",
+  "unit": "l",
+  "categoryId": 2
+}`}
+                </pre>
+              </div>
+
+              <div className="mt-4 text-sm text-slate-600">
+                <div className="font-medium text-slate-800">What happens next?</div>
+                <ul className="mt-2 list-disc space-y-1 pl-5">
+                  <li>Set first price snapshot (BGN → EUR)</li>
+                  <li>Verify compliance if dual pricing is active</li>
+                  <li>Track changes in analytics</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4">
+              <p className="text-sm text-blue-900">
+                Tip: keep product names stable. Frequent renaming makes analytics and
+                compliance audits harder.
+              </p>
             </div>
           </div>
         </div>
       </div>
     </div>
   );
-};
+}

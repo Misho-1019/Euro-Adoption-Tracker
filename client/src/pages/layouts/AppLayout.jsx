@@ -26,14 +26,12 @@ export default function AppLayout() {
   const navItems = [
     { name: "Dashboard", path: "/", icon: LayoutDashboard },
     { name: "Products", path: "/products", icon: Package },
-    { name: "Exchange Rate", path: "/rate", icon: TrendingUp },
     { name: "Basket Quote", path: "/basket", icon: ShoppingBasket },
     { name: "Compliance", path: "/compliance", icon: ShieldCheck },
     { name: "Analytics", path: "/analytics", icon: BarChart2 },
   ];
 
   const adminItems = [
-    { name: "Admin Overview", path: "/admin", icon: Lock },
     { name: "Admin Rate", path: "/admin/rate", icon: TrendingUp },
     { name: "Admin Products", path: "/admin/products", icon: Package },
     { name: "Admin Categories", path: "/admin/categories", icon: Layers },
